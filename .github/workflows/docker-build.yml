@@ -1,4 +1,4 @@
-name: Docker Build
+name: Docker Build and Push
 
 on:
   push:
@@ -11,5 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Build Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
       - name: Build Docker image
-        run: docker build -t devops-lab .
+        run: docker build -t urbinajay/devops-nginx-docker-lab .
+
+      - name: Push Docker image
+        run: docker push urbinajay/devops-nginx-docker-lab
